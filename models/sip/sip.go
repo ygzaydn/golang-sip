@@ -3,6 +3,7 @@ package sip
 import (
 	"errors"
 	"fmt"
+	"net"
 	"strings"
 
 	"github.com/ygzaydn/golang-sip/utils"
@@ -54,10 +55,9 @@ func (s *SIPMessage) ToString() string {
 			builder.WriteString(fmt.Sprintf("%s: %s\r\n", key, value))
 		}
 	}
+	builder.WriteString("\r\n")
 	if s.Body != "" {
-		builder.WriteString("\r\n")
 		builder.WriteString(s.Body)
-
 	}
 
 	return builder.String()
@@ -137,7 +137,23 @@ func ISSIPMessage(message string) bool {
 	return false
 }
 
-func HandleRequest(SIPString string) *SIPMessage {
+func (s *SIPMessage) HandleRequest(conn *net.UDPConn, clientAddr *net.UDPAddr) {
+
+	switch s.Method {
+	case "REGISTER":
+		responseHeaders := map[string][]string{
+			"Via":     s.Headers["Via"],
+			"From":    s.Headers["From"],
+			"To":      s.Headers["To"],
+			"Call-ID": s.Headers["Call-ID"],
+			"CSeq":    s.Headers["CSeq"],
+		}
+
+		resp := NewResponse(100, "Trying", responseHeaders, "").ToString()
+		_, err := conn.WriteToUDP([]byte(resp), clientAddr)
+		if err != nil {
+			fmt.Println("Error sending response:", err)
+		}
+	}
 	// Will work as SIP Parser
-	return &SIPMessage{}
 }
