@@ -138,7 +138,7 @@ func ISSIPMessage(message string) bool {
 }
 
 func (s *SIPMessage) HandleRequest(conn *net.UDPConn, clientAddr *net.UDPAddr) {
-
+	// Will work as SIP Parser
 	switch s.Method {
 	case "REGISTER":
 		responseHeaders := map[string][]string{
@@ -155,5 +155,5 @@ func (s *SIPMessage) HandleRequest(conn *net.UDPConn, clientAddr *net.UDPAddr) {
 			fmt.Println("Error sending response:", err)
 		}
 	}
-	// Will work as SIP Parser
+
 }
