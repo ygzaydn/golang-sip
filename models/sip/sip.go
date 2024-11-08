@@ -3,8 +3,8 @@ package sip
 import (
 	"errors"
 	"fmt"
-	"net"
 	"strings"
+	"time"
 
 	"github.com/ygzaydn/golang-sip/utils"
 )
@@ -137,23 +137,42 @@ func ISSIPMessage(message string) bool {
 	return false
 }
 
-func (s *SIPMessage) HandleRequest(conn *net.UDPConn, clientAddr *net.UDPAddr) {
+func (s *SIPMessage) HandleRequest(responseChannel chan *SIPMessage) {
 	// Will work as SIP Parser
+
 	switch s.Method {
 	case "REGISTER":
-		responseHeaders := map[string][]string{
-			"Via":     s.Headers["Via"],
-			"From":    s.Headers["From"],
-			"To":      s.Headers["To"],
-			"Call-ID": s.Headers["Call-ID"],
-			"CSeq":    s.Headers["CSeq"],
-		}
+		responseChannel <- s.generateTryingMessage()
+		time.Sleep(2 * time.Second)
+		responseChannel <- s.generateOKMessage()
 
-		resp := NewResponse(100, "Trying", responseHeaders, "").ToString()
-		_, err := conn.WriteToUDP([]byte(resp), clientAddr)
-		if err != nil {
-			fmt.Println("Error sending response:", err)
-		}
+	}
+	switch s.StatusCode {
+	case 100:
+		responseChannel <- s
+	}
+}
+
+func (s *SIPMessage) generateTryingMessage() *SIPMessage {
+	responseHeaders := map[string][]string{
+		"Via":     s.Headers["Via"],
+		"From":    s.Headers["From"],
+		"To":      s.Headers["To"],
+		"Call-ID": s.Headers["Call-ID"],
+		"CSeq":    s.Headers["CSeq"],
 	}
 
+	return NewResponse(100, "Trying", responseHeaders, "")
+}
+
+func (s *SIPMessage) generateOKMessage() *SIPMessage {
+	responseHeaders := map[string][]string{
+		"Via":     s.Headers["Via"],
+		"From":    s.Headers["From"],
+		"To":      s.Headers["To"],
+		"Call-ID": s.Headers["Call-ID"],
+		"CSeq":    s.Headers["CSeq"],
+	}
+
+	return NewResponse(200, "OK", responseHeaders, "")
 }

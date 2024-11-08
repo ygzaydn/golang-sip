@@ -70,14 +70,20 @@ func udpListener(conn *net.UDPConn, bufferSize int, logger *logger.Logger) {
 			logger.BuildLogMessage("Server Received\t- " + utils.FormatLogMessage(message.Method))
 		}
 
-		message.HandleRequest(conn, clientAddr)
-		// Example response - will change it later on
-		response := []byte("Message received!")
+		responseChannel := make(chan *sip.SIPMessage)
 
-		_, err = conn.WriteToUDP(response, clientAddr)
-		if err != nil {
-			fmt.Println("Error sending response:", err)
+		go message.HandleRequest(responseChannel)
+
+		for response := range responseChannel {
+
+			_, err = conn.WriteToUDP([]byte(response.ToString()), clientAddr)
+			if err != nil {
+				fmt.Println("Error sending response:", err)
+			}
 		}
+
+		close(responseChannel)
+		// Example response - will change it later on
 
 	}
 
