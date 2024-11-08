@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/ygzaydn/golang-sip/utils"
 )
 
 type SIPMessage struct {
@@ -35,8 +37,13 @@ func (s *SIPMessage) ToString() string {
 	var builder strings.Builder
 
 	if s.Method != "" {
+		if s.Method == "REGISTER" {
+			builder.WriteString(fmt.Sprintf("%s %s SIP/2.0\r\n", s.Method, utils.ExtractInfoFromSigns(s.Headers["To"][0])))
+		} else {
+			builder.WriteString(fmt.Sprintf("%s SIP/2.0\r\n", s.Method))
+		}
 		// Request format
-		builder.WriteString(fmt.Sprintf("%s SIP/2.0\r\n", s.Method))
+
 	} else {
 		// Response format
 		builder.WriteString(fmt.Sprintf("SIP/2.0 %d %s\r\n", s.StatusCode, s.Reason))
@@ -98,7 +105,6 @@ func ToSIP(rawMessage string) (*SIPMessage, error) {
 	}
 
 	return message, err
-
 }
 
 func iSSIPRequest(message string) bool {

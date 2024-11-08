@@ -34,7 +34,7 @@ func main() {
 		"Authorization":  {"Digest username=\"alice\", realm=\"example.com\", nonce=\"xyz\", uri=\"sip:example.com\", response=\"abc123\""},
 	}
 
-	sipRequest := sip.NewRequest("REGISTER sip:example.com", requestHeaders, "")
+	sipRequest := sip.NewRequest("REGISTER", requestHeaders, "")
 	clientA.SendMessage(sipRequest)
 	defer clientA.Connection.Close()
 	for {
