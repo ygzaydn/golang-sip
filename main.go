@@ -37,4 +37,6 @@ func main() {
 	sipRequest := sip.NewRequest("REGISTER sip:example.com", requestHeaders, "")
 	clientA.SendMessage(sipRequest)
 	defer clientA.Connection.Close()
+	for {
+	}
 }

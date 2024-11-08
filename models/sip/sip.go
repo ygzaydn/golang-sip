@@ -1,6 +1,7 @@
 package sip
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -55,20 +56,82 @@ func (s *SIPMessage) ToString() string {
 	return builder.String()
 }
 
-func ToSIP(SIPString string) *SIPMessage {
-	// Will work as SIP Parser
-	return &SIPMessage{}
-}
-
-func HandleSIPRequest() {
+func ToSIP(rawMessage string) (*SIPMessage, error) {
 	// Will handle incoming requests
+	isRequest := iSSIPRequest(rawMessage)
+	message := &SIPMessage{
+		Headers: make(map[string][]string),
+	}
+	var err error
+
+	lines := strings.Split(rawMessage, "\r\n")
+	firstLine := lines[0]
+
+	if isRequest {
+		lineParts := strings.SplitN(firstLine, " ", 3)
+		if len(lineParts) < 2 {
+			return nil, errors.New("invalid SIP request start line")
+		}
+		message.StatusCode = 0
+		message.Method = lineParts[0]
+
+		// for _, value := range lines {
+		// 	fmt.Println(value)
+		// }
+	} else {
+		// TODO
+	}
+
+	i := 1
+	for ; i < len(lines); i++ {
+		line := lines[i]
+		if line == "" {
+			break // End of headers section, body section must be covered aswell
+		}
+		headerParts := strings.SplitN(line, ": ", 2)
+		if len(headerParts) != 2 {
+			return nil, fmt.Errorf("invalid header format: %s", line)
+		}
+		headerName := headerParts[0]
+		headerValue := headerParts[1]
+		message.Headers[headerName] = append(message.Headers[headerName], headerValue)
+	}
+
+	return message, err
+
 }
 
-func ISSIPRequest(message string) bool {
+func iSSIPRequest(message string) bool {
 	lines := strings.Split(message, "\r\n")
 	if len(lines) > 0 {
 		firstLine := lines[0]
 		return !strings.HasPrefix(firstLine, "SIP/")
 	}
 	return false
+}
+
+func ISSIPMessage(message string) bool {
+
+	lines := strings.Split(message, "\r\n")
+	startLine := lines[0]
+
+	if strings.HasPrefix(startLine, "SIP/2.0") {
+		parts := strings.SplitN(startLine, " ", 3)
+
+		if len(parts) >= 3 && strings.HasPrefix(parts[0], "SIP/2.0") {
+			return true
+		}
+	} else {
+		parts := strings.SplitN(startLine, " ", 3)
+
+		if len(parts) == 3 && strings.HasSuffix(parts[2], "SIP/2.0") {
+			return true
+		}
+	}
+	return false
+}
+
+func HandleRequest(SIPString string) *SIPMessage {
+	// Will work as SIP Parser
+	return &SIPMessage{}
 }

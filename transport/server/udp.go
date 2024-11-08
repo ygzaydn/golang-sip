@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"github.com/ygzaydn/golang-sip/logger"
+	"github.com/ygzaydn/golang-sip/models/sip"
 	"github.com/ygzaydn/golang-sip/utils"
 )
 
@@ -40,19 +41,33 @@ func udpListener(conn *net.UDPConn, bufferSize int, logger *logger.Logger) {
 
 	// Not sure if I should make bufferSize as a parameter
 	buffer := make([]byte, bufferSize)
-
+	defer conn.Close()
 	for {
+
 		n, clientAddr, err := conn.ReadFromUDP(buffer)
 
 		if err != nil {
 			fmt.Println("Error reading from client:", err)
-			break
+			continue
 		}
 
-		// For logging purposes - will add it on logger service
+		msg := string(buffer[:n])
+		isValid := sip.ISSIPMessage(msg)
+
+		if !isValid {
+			logger.BuildLogMessage("Server received a message, but format is wrong, message skipped.")
+			continue
+		}
+
+		message, err := sip.ToSIP(msg)
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
 		if logger != nil {
-			logMessage := fmt.Sprintf("Received %s from %s\n", string(buffer[:n]), clientAddr)
-			logger.BuildLogMessage(utils.FormatLogMessage(logMessage))
+			logger.BuildLogMessage("Server Received\t- " + utils.FormatLogMessage(message.Method))
 		}
 
 		// Example response - will change it later on
@@ -62,6 +77,7 @@ func udpListener(conn *net.UDPConn, bufferSize int, logger *logger.Logger) {
 		if err != nil {
 			fmt.Println("Error sending response:", err)
 		}
+
 	}
-	defer conn.Close()
+
 }

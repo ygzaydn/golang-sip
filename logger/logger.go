@@ -25,8 +25,8 @@ func New(level int) *Logger {
 func (l *Logger) BuildLogMessage(message string) {
 	l.Message = LogMessage{
 		Message: message,
-		Time:    time.Now(),
+		Time:    time.Now().UTC(),
 	}
 
-	fmt.Printf("%s - %s", l.Message.Time, l.Message.Message)
+	fmt.Printf("%s - %s\n", l.Message.Time, l.Message.Message)
 }

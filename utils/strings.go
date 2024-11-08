@@ -5,5 +5,5 @@ import (
 )
 
 func FormatLogMessage(message string) string {
-	return strings.ReplaceAll(message, "\r\n", " ")
+	return strings.ReplaceAll(message, "", "")
 }
