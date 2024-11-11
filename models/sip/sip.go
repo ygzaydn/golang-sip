@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/ygzaydn/golang-sip/utils"
 )
@@ -146,7 +145,7 @@ func (s *SIPMessage) HandleRequest(responseChannel chan *SIPMessage) {
 	switch s.Method {
 	case "REGISTER":
 		responseChannel <- s.generateTryingMessage()
-		time.Sleep(2 * time.Second)
+		//time.Sleep(2 * time.Second)
 		if len(s.Headers["Authorization"]) < 1 {
 			responseChannel <- s.generate401UnauthorizedMessage()
 		} else {

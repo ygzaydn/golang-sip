@@ -46,11 +46,10 @@ func main() {
 		fmt.Println("Error sending SIP Message")
 	}
 
-	//clientA.SendMessage(server.Address, sipRequest2)
+	fmt.Println(clientA.LastMessage)
+	// clientA.SendMessage(server.Address, sipRequest2)
 
 	defer clientA.Connection.Close()
 	defer server.Connection.Close()
-	for {
 
-	}
 }
