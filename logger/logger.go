@@ -3,6 +3,8 @@ package logger
 import (
 	"fmt"
 	"time"
+
+	"github.com/ygzaydn/golang-sip/utils"
 )
 
 type LogMessage struct {
@@ -27,6 +29,7 @@ func (l *Logger) BuildLogMessage(message string) {
 		Message: message,
 		Time:    time.Now().UTC(),
 	}
-
-	fmt.Printf("%s - %s\n", l.Message.Time, l.Message.Message)
+	logLine := fmt.Sprintf("%s\t- %s\n", l.Message.Time, l.Message.Message)
+	fmt.Print(logLine)
+	utils.WriteToLogFile("log", logLine)
 }

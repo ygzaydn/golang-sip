@@ -5,7 +5,7 @@ import (
 )
 
 func FormatLogMessage(message string) string {
-	return strings.ReplaceAll(message, "", "")
+	return strings.ReplaceAll(message, " ", "")
 }
 
 func ExtractInfoFromSigns(message string) string {

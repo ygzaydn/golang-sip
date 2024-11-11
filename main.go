@@ -5,14 +5,17 @@ import (
 
 	"github.com/ygzaydn/golang-sip/logger"
 	"github.com/ygzaydn/golang-sip/models/sip"
-	"github.com/ygzaydn/golang-sip/transport/client"
-	"github.com/ygzaydn/golang-sip/transport/server"
+	"github.com/ygzaydn/golang-sip/transport/udp"
 )
 
 func main() {
 	logger := logger.New(1)
-	server.UDPEngine("127.0.0.1", 5060, 1024, logger)
-	clientA, err := client.New("127.0.0.1", 5060, logger)
+	server, err := udp.New("server", "127.0.0.1", 5060, 1024, logger)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	clientA, err := udp.New("client", "127.0.0.1", 5065, 1024, logger)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -31,12 +34,17 @@ func main() {
 		"Max-Forwards":   {"70"},
 		"User-Agent":     {"MySIPClient/1.0"},
 		"Expires":        {"3600"},
-		"Authorization":  {"Digest username=\"alice\", realm=\"example.com\", nonce=\"xyz\", uri=\"sip:example.com\", response=\"abc123\""},
+		//"Authorization":  {"Digest username=\"alice\", realm=\"example.com\", nonce=\"xyz\", uri=\"sip:example.com\", response=\"abc123\""},
 	}
 
 	sipRequest := sip.NewRequest("REGISTER", requestHeaders, "")
-	clientA.SendMessage(sipRequest)
+	//sipRequest2 := sip.NewResponse(100, "Trying", requestHeaders, "")
+
+	clientA.SendMessage(server.Address, sipRequest)
+	//clientA.SendMessage(server.Address, sipRequest2)
+
 	defer clientA.Connection.Close()
+	defer server.Connection.Close()
 	for {
 	}
 }

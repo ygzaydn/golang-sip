@@ -10,13 +10,21 @@ import (
 	"github.com/ygzaydn/golang-sip/utils"
 )
 
-func UDPEngine(ip string, port int, bufferSize int, logger *logger.Logger) {
-	udpServer, err := createUDPServer(ip, port)
-	if err != nil {
-		panic(err)
-	}
-	go udpListener(udpServer, bufferSize, logger)
+type UDPServer struct {
+	Connection *net.UDPConn
+	logger     *logger.Logger
+}
 
+func New(ip string, port int, bufferSize int, logger *logger.Logger) (*UDPServer, error) {
+	conn, err := createUDPServer(ip, port)
+	if err != nil {
+		return nil, err
+	}
+	go udpListener(conn, bufferSize, logger)
+	return &UDPServer{
+		Connection: conn,
+		logger:     logger,
+	}, err
 }
 
 func createUDPServer(ip string, port int) (*net.UDPConn, error) {
@@ -77,14 +85,18 @@ func udpListener(conn *net.UDPConn, bufferSize int, logger *logger.Logger) {
 		for response := range responseChannel {
 
 			_, err = conn.WriteToUDP([]byte(response.ToString()), clientAddr)
+			if response.StatusCode != 0 {
+				logger.BuildLogMessage("Server Sent \t- " + fmt.Sprint(response.StatusCode) + " " + utils.FormatLogMessage(response.Reason))
+			} else {
+				logger.BuildLogMessage("Server Sent \t- " + utils.FormatLogMessage(response.Method))
+			}
+
 			if err != nil {
 				fmt.Println("Error sending response:", err)
 			}
 		}
 
 		close(responseChannel)
-		// Example response - will change it later on
 
 	}
-
 }

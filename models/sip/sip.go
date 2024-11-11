@@ -3,6 +3,7 @@ package sip
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -65,7 +66,7 @@ func (s *SIPMessage) ToString() string {
 
 func ToSIP(rawMessage string) (*SIPMessage, error) {
 	// Will handle incoming requests
-	isRequest := iSSIPRequest(rawMessage)
+	isRequest := ISSIPRequest(rawMessage)
 	message := &SIPMessage{
 		Headers: make(map[string][]string),
 	}
@@ -82,11 +83,13 @@ func ToSIP(rawMessage string) (*SIPMessage, error) {
 		message.StatusCode = 0
 		message.Method = lineParts[0]
 
-		// for _, value := range lines {
-		// 	fmt.Println(value)
-		// }
 	} else {
-		// TODO
+		lineParts := strings.SplitN(firstLine, " ", 3)
+		if len(lineParts) < 2 {
+			return nil, errors.New("invalid SIP response start line")
+		}
+		message.StatusCode, _ = strconv.Atoi(lineParts[1])
+		message.Reason = lineParts[2]
 	}
 
 	i := 1
@@ -107,7 +110,7 @@ func ToSIP(rawMessage string) (*SIPMessage, error) {
 	return message, err
 }
 
-func iSSIPRequest(message string) bool {
+func ISSIPRequest(message string) bool {
 	lines := strings.Split(message, "\r\n")
 	if len(lines) > 0 {
 		firstLine := lines[0]
@@ -144,12 +147,18 @@ func (s *SIPMessage) HandleRequest(responseChannel chan *SIPMessage) {
 	case "REGISTER":
 		responseChannel <- s.generateTryingMessage()
 		time.Sleep(2 * time.Second)
-		responseChannel <- s.generateOKMessage()
+		if len(s.Headers["Authorization"]) < 1 {
+			responseChannel <- s.generate401UnauthorizedMessage()
+		} else {
+			responseChannel <- s.generateOKMessage()
+		}
 
 	}
 	switch s.StatusCode {
 	case 100:
-		responseChannel <- s
+	case 200:
+	case 401:
+		responseChannel <- s.handle401UnauthorizedMessage()
 	}
 }
 
@@ -175,4 +184,35 @@ func (s *SIPMessage) generateOKMessage() *SIPMessage {
 	}
 
 	return NewResponse(200, "OK", responseHeaders, "")
+}
+
+func (s *SIPMessage) generate401UnauthorizedMessage() *SIPMessage {
+	responseHeaders := map[string][]string{
+		"Via":     s.Headers["Via"],
+		"From":    s.Headers["From"],
+		"To":      s.Headers["To"],
+		"Call-ID": s.Headers["Call-ID"],
+		"CSeq":    s.Headers["CSeq"],
+	}
+
+	return NewResponse(401, "Unauthorized", responseHeaders, "")
+}
+
+func (s *SIPMessage) handle401UnauthorizedMessage() *SIPMessage {
+	s.Headers["Authorization"] = []string{"Digest username=\"alice\", realm=\"example.com\", nonce=\"xyz\", uri=\"sip:example.com\", response=\"abc123\""}
+
+	parsedCSeq := strings.SplitN(s.Headers["CSeq"][0], " ", 2)
+
+	CSeqNum, err := strconv.Atoi(parsedCSeq[0])
+
+	if err != nil {
+		fmt.Println("Wrong CSeq value")
+	}
+
+	updatedCSeq := fmt.Sprintf("%d %s", CSeqNum+1, parsedCSeq[1])
+
+	s.Headers["CSeq"] = []string{updatedCSeq}
+
+	return NewRequest("REGISTER", s.Headers, s.Body)
+
 }
