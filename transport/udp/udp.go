@@ -11,10 +11,12 @@ import (
 )
 
 type UDPEntity struct {
-	Connection *net.UDPConn
-	logger     *logger.Logger
-	entityType string
-	Address    *net.UDPAddr
+	Connection     *net.UDPConn
+	logger         *logger.Logger
+	entityType     string
+	Address        *net.UDPAddr
+	LastMessage    *sip.SIPMessage
+	MessageChannel chan *sip.SIPMessage
 }
 
 func New(entityType string, ip string, port int, bufferSize int, logger *logger.Logger) (*UDPEntity, error) {
@@ -32,10 +34,12 @@ func New(entityType string, ip string, port int, bufferSize int, logger *logger.
 	fmt.Printf("UDP server listening on port %d...\n", port)
 
 	entity := &UDPEntity{
-		Connection: conn,
-		logger:     logger,
-		entityType: entityType,
-		Address:    &addr,
+		Connection:     conn,
+		logger:         logger,
+		entityType:     entityType,
+		Address:        &addr,
+		LastMessage:    nil,
+		MessageChannel: make(chan *sip.SIPMessage),
 	}
 
 	go entity.udpListener(bufferSize, entityType)
@@ -60,11 +64,12 @@ func (u *UDPEntity) SendMessage(address *net.UDPAddr, message *sip.SIPMessage) e
 func (u *UDPEntity) udpListener(bufferSize int, entityType string) {
 
 	// Not sure if I should make bufferSize as a parameter
-
 	buffer := make([]byte, bufferSize)
+
 	defer u.Connection.Close()
 
 	for {
+
 		responseChannel := make(chan *sip.SIPMessage)
 		n, clientAddr, err := u.Connection.ReadFromUDP(buffer)
 		if err != nil {
@@ -94,15 +99,15 @@ func (u *UDPEntity) udpListener(bufferSize int, entityType string) {
 				u.logger.BuildLogMessage(entityType + " received \t- " + utils.FormatLogMessage(message.Method))
 			}
 		}
-
 		go func() {
+
 			message.HandleRequest(responseChannel)
 			close(responseChannel)
 		}()
 
 		for response := range responseChannel {
-			_, err = u.Connection.WriteToUDP([]byte(response.ToString()), clientAddr)
 
+			_, err = u.Connection.WriteToUDP([]byte(response.ToString()), clientAddr)
 			if err != nil {
 				fmt.Println("Error sending response:", err)
 				continue

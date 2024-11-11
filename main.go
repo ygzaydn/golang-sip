@@ -40,11 +40,17 @@ func main() {
 	sipRequest := sip.NewRequest("REGISTER", requestHeaders, "")
 	//sipRequest2 := sip.NewResponse(100, "Trying", requestHeaders, "")
 
-	clientA.SendMessage(server.Address, sipRequest)
+	err = clientA.SendMessage(server.Address, sipRequest)
+
+	if err != nil {
+		fmt.Println("Error sending SIP Message")
+	}
+
 	//clientA.SendMessage(server.Address, sipRequest2)
 
 	defer clientA.Connection.Close()
 	defer server.Connection.Close()
 	for {
+
 	}
 }

@@ -160,6 +160,7 @@ func (s *SIPMessage) HandleRequest(responseChannel chan *SIPMessage) {
 	case 401:
 		responseChannel <- s.handle401UnauthorizedMessage()
 	}
+
 }
 
 func (s *SIPMessage) generateTryingMessage() *SIPMessage {
