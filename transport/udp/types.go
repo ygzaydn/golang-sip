@@ -33,6 +33,7 @@ type ClientParameters struct {
 	RegistrarURI string
 	Contact      string
 	DisplayName  string
+	UserAgent    string
 }
 
 type UDPEntity struct {
@@ -51,7 +52,7 @@ type UDPServer struct {
 
 type UDPClient struct {
 	Entity     UDPEntity
-	parameters ClientParameters
+	Parameters ClientParameters
 }
 
 type UDPListener interface {

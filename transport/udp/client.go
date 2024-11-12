@@ -33,7 +33,7 @@ func Client(ip string, port int, bufferSize int, logger *logger.Logger, clientPa
 			LastMessage:    nil,
 			MessageChannel: make(chan *sip.SIPMessage, 50),
 		},
-		parameters: clientParameters,
+		Parameters: clientParameters,
 	}
 
 	go client.udpListener(bufferSize)
