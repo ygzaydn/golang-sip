@@ -50,22 +50,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	requestHeaders := map[string][]string{
-		"Via": {
-			"SIP/2.0/UDP 127.0.0.1:5065;branch=z9hG4bK776asdhds",
-		},
-		"From":           {"<" + clientA.Parameters.Uri + ">;tag=12345"},
-		"To":             {"<" + clientA.Parameters.Uri + ">"},
-		"Call-ID":        {"a84b4c76e66710@127.0.0.1"},
-		"CSeq":           {"371920 REGISTER"},
-		"Contact":        {clientA.Parameters.Contact},
-		"Content-Length": {"0"}, // No body in this request
-		"Max-Forwards":   {"70"},
-		"User-Agent":     {clientA.Parameters.UserAgent},
-		"Expires":        {"3600"},
-	}
-
-	sipRequest := sip.NewRequest("REGISTER", requestHeaders, "")
+	sipRequest := sip.NewRequest("REGISTER", clientA.GenerateInitialRegisterHeaders(), "")
 
 	err = clientA.SendMessage(server.Entity.Address, sipRequest)
 
@@ -79,9 +64,9 @@ func main() {
 	fmt.Println(clientMsg, serverMsg)
 
 	if clientMsg.StatusCode == 401 {
-		requestHeaders = clientMsg.Headers
+		requestHeaders := clientMsg.Headers
 		requestHeaders["Authorization"] = []string{"Digest username=\"alice\", realm=\"127.0.0.1\", nonce=\"xyz\", uri=\"sip:127.0.0.1\", response=\"abc123\""}
-		delete(requestHeaders, "WWW-Authorization")
+		delete(requestHeaders, "WWW-Authenticate")
 
 		sipRequest = sip.NewRequest("REGISTER", requestHeaders, "")
 		err = clientA.SendMessage(server.Entity.Address, sipRequest)

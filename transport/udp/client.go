@@ -151,3 +151,21 @@ func (u *UDPClient) ReadLastMessage() *sip.SIPMessage {
 	u.Entity.MessageChannel = make(chan *sip.SIPMessage, 50)
 	return u.Entity.LastMessage
 }
+
+func (u *UDPClient) GenerateInitialRegisterHeaders() map[string][]string {
+	port := fmt.Sprintf("%d", u.Entity.Address.Port)
+	return map[string][]string{
+		"Via": {
+			"SIP/2.0/UDP " + u.Parameters.Realm + ":" + port + ";branch=" + utils.GenerateBranch(),
+		},
+		"From":           {"<" + u.Parameters.Uri + ">;tag=" + utils.GenerateTag()},
+		"To":             {"<" + u.Parameters.Uri + ">"},
+		"Call-ID":        {utils.GenerateCallID() + "@" + u.Parameters.Domain},
+		"CSeq":           {utils.GenerateCSeq() + " REGISTER"},
+		"Contact":        {u.Parameters.Contact},
+		"Content-Length": {"0"}, // No body in this request
+		"Max-Forwards":   {"70"},
+		"User-Agent":     {u.Parameters.UserAgent},
+		"Expires":        {"3600"},
+	}
+}
