@@ -79,22 +79,9 @@ func main() {
 	fmt.Println(clientMsg, serverMsg)
 
 	if clientMsg.StatusCode == 401 {
-		requestHeaders = map[string][]string{
-			"Via": {
-				"SIP/2.0/UDP alice.127.0.0.1;branch=z9hG4bK1",
-				"SIP/2.0/UDP second.127.0.0.1;branch=z9hG4bK2",
-			},
-			"From":           {"Alice <sip:alice@127.0.0.1>;tag=12345"},
-			"To":             {"Alice <sip:alice@127.0.0.1>"},
-			"Call-ID":        {"1234567890@127.0.0.1"},
-			"CSeq":           {"1 REGISTER"},
-			"Contact":        {"<sip:alice@client.127.0.0.1>"},
-			"Content-Length": {"0"},
-			"Max-Forwards":   {"70"},
-			"User-Agent":     {"MySIPClient/1.0"},
-			"Expires":        {"3600"},
-			"Authorization":  {"Digest username=\"alice\", realm=\"127.0.0.1\", nonce=\"xyz\", uri=\"sip:127.0.0.1\", response=\"abc123\""},
-		}
+		requestHeaders = clientMsg.Headers
+		requestHeaders["Authorization"] = []string{"Digest username=\"alice\", realm=\"127.0.0.1\", nonce=\"xyz\", uri=\"sip:127.0.0.1\", response=\"abc123\""}
+		delete(requestHeaders, "WWW-Authorization")
 
 		sipRequest = sip.NewRequest("REGISTER", requestHeaders, "")
 		err = clientA.SendMessage(server.Entity.Address, sipRequest)
