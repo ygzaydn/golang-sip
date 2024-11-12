@@ -139,17 +139,17 @@ func ISSIPMessage(message string) bool {
 	return false
 }
 
-func (s *SIPMessage) HandleRequest(responseChannel chan *SIPMessage) {
+func (s *SIPMessage) HandleRequest() []*SIPMessage {
 	// Will work as SIP Parser
-
+	output := make([]*SIPMessage, 0)
 	switch s.Method {
 	case "REGISTER":
-		responseChannel <- s.generateTryingMessage()
-		//time.Sleep(2 * time.Second)
+		output = append(output, s.generateTryingMessage())
+
 		if len(s.Headers["Authorization"]) < 1 {
-			responseChannel <- s.generate401UnauthorizedMessage()
+			output = append(output, s.generate401UnauthorizedMessage())
 		} else {
-			responseChannel <- s.generateOKMessage()
+			output = append(output, s.generateOKMessage())
 		}
 
 	}
@@ -157,9 +157,9 @@ func (s *SIPMessage) HandleRequest(responseChannel chan *SIPMessage) {
 	case 100:
 	case 200:
 	case 401:
-		responseChannel <- s.handle401UnauthorizedMessage()
-	}
 
+	}
+	return output
 }
 
 func (s *SIPMessage) generateTryingMessage() *SIPMessage {
@@ -210,7 +210,6 @@ func (s *SIPMessage) handle401UnauthorizedMessage() *SIPMessage {
 	}
 
 	updatedCSeq := fmt.Sprintf("%d %s", CSeqNum+1, parsedCSeq[1])
-
 	s.Headers["CSeq"] = []string{updatedCSeq}
 
 	return NewRequest("REGISTER", s.Headers, s.Body)

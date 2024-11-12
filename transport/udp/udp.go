@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"sync"
 
 	"github.com/ygzaydn/golang-sip/logger"
 	"github.com/ygzaydn/golang-sip/models/sip"
@@ -18,7 +17,7 @@ type UDPEntity struct {
 	Address        *net.UDPAddr
 	LastMessage    *sip.SIPMessage
 	MessageChannel chan *sip.SIPMessage
-	Wg             sync.WaitGroup
+	Wg             *utils.CustomWaitGroup
 }
 
 func New(entityType string, ip string, port int, bufferSize int, logger *logger.Logger) (*UDPEntity, error) {
@@ -41,8 +40,8 @@ func New(entityType string, ip string, port int, bufferSize int, logger *logger.
 		entityType:     entityType,
 		Address:        &addr,
 		LastMessage:    nil,
-		MessageChannel: make(chan *sip.SIPMessage),
-		Wg:             sync.WaitGroup{},
+		MessageChannel: make(chan *sip.SIPMessage, 50),
+		Wg:             &utils.CustomWaitGroup{},
 	}
 
 	go entity.udpListener(bufferSize, entityType)
@@ -51,18 +50,19 @@ func New(entityType string, ip string, port int, bufferSize int, logger *logger.
 }
 
 func (u *UDPEntity) SendMessage(address *net.UDPAddr, message *sip.SIPMessage) error {
-	u.Wg.Add(2)
 	var err error
 	if message != nil {
 		if u.logger != nil {
-			u.logger.BuildLogMessage(u.entityType + " sent\t- " + utils.FormatLogMessage(message.Method))
+			if message.StatusCode != 0 {
+				u.logger.BuildLogMessage(u.entityType + " sent \t- " + fmt.Sprint(message.StatusCode) + " " + utils.FormatLogMessage(message.Reason))
+			} else {
+				u.logger.BuildLogMessage(u.entityType + " sent\t- " + utils.FormatLogMessage(message.Method))
+			}
 
 		}
 		_, err = u.Connection.WriteToUDP([]byte(message.ToString()), address)
 	}
 
-	u.Wg.Done()
-	u.Wg.Wait()
 	return err
 }
 
@@ -70,12 +70,13 @@ func (u *UDPEntity) udpListener(bufferSize int, entityType string) {
 
 	// Not sure if I should make bufferSize as a parameter
 	buffer := make([]byte, bufferSize)
-	var lastMessage *sip.SIPMessage
+
 	defer u.Connection.Close()
 
 	for {
 
 		n, clientAddr, err := u.Connection.ReadFromUDP(buffer)
+
 		if err != nil {
 			fmt.Println("Error reading: ", err)
 			continue
@@ -104,31 +105,40 @@ func (u *UDPEntity) udpListener(bufferSize int, entityType string) {
 			}
 		}
 
-		u.Wg.Add(1)
-		go func() {
-			go message.HandleRequest(u.MessageChannel)
+		responses := message.HandleRequest()
 
-			for response := range u.MessageChannel {
-				_, err = u.Connection.WriteToUDP([]byte(response.ToString()), clientAddr)
-				if err != nil {
-					fmt.Println("Error sending response:", err)
-					continue
-				}
+		if len(responses) < 1 {
+			continue
+		}
 
-				if u.logger != nil {
-					if response.StatusCode != 0 {
-						u.logger.BuildLogMessage(entityType + " sent \t- " + fmt.Sprint(response.StatusCode) + " " + utils.FormatLogMessage(response.Reason))
-					} else {
-						u.logger.BuildLogMessage(entityType + " sent \t- " + utils.FormatLogMessage(response.Method))
-					}
-				}
-				lastMessage = response
+		for _, response := range responses {
+			err = u.SendMessage(clientAddr, response)
+			if err != nil {
+				fmt.Println("Error sending response:", err)
+				continue
 			}
-		}()
+			if response != nil {
+				u.MessageChannel <- response
+				if response.StatusCode == 200 {
+					close(u.MessageChannel)
+				}
+				if response.StatusCode == 401 {
+					close(u.MessageChannel)
+				}
+			}
+		}
 
-		u.Wg.Done()
+	}
+}
 
-		u.LastMessage = lastMessage
+func (u *UDPEntity) ReadLastMessage() {
+	for value := range u.MessageChannel {
+
+		if value != nil {
+			u.LastMessage = value
+		}
 	}
 
+	u.MessageChannel = make(chan *sip.SIPMessage, 50)
+	fmt.Println("Last message: ", u.LastMessage)
 }
