@@ -42,6 +42,7 @@ type SIPMessage struct {
 }
 
 type ClientInfo struct {
+	IsPresent          bool
 	CSeq               int
 	IsRegistered       bool
 	Contact            string

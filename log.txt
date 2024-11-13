@@ -2010,3 +2010,15 @@
 2024-11-13 11:15:33.8516632 +0000 UTC	- client received 	- 100 Trying
 2024-11-13 11:15:35.852033 +0000 UTC	- server sent 	- 200 OK
 2024-11-13 11:15:35.8528594 +0000 UTC	- client received 	- 200 OK
+2024-11-13 11:17:04.2495511 +0000 UTC	- client sent	- REGISTER
+2024-11-13 11:17:04.2505999 +0000 UTC	- server received 	- REGISTER
+2024-11-13 11:17:04.2505999 +0000 UTC	- server sent 	- 100 Trying
+2024-11-13 11:17:04.2511335 +0000 UTC	- client received 	- 100 Trying
+2024-11-13 11:17:06.2522089 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-13 11:17:06.2540568 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-13 11:17:06.2542073 +0000 UTC	- client sent	- REGISTER
+2024-11-13 11:17:06.2547647 +0000 UTC	- server received 	- REGISTER
+2024-11-13 11:17:06.2553116 +0000 UTC	- server sent 	- 100 Trying
+2024-11-13 11:17:06.2558412 +0000 UTC	- client received 	- 100 Trying
+2024-11-13 11:17:08.2560238 +0000 UTC	- server sent 	- 200 OK
+2024-11-13 11:17:08.257511 +0000 UTC	- client received 	- 200 OK

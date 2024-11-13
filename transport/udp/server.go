@@ -168,6 +168,7 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 	case 401:
 
 		var newState sip.ClientInfo
+
 		contact, err := utils.ParseToHeader(parsedMessage.Headers["From"][0])
 		if err != nil {
 			return err
@@ -178,13 +179,23 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 			return err
 		}
 
-		newState.IsRegistered = false
-		newState.Contact = contact
-		newState.AuthToken = ""
-		newState.TransportType = "UDP"
-		newState.CSeq = CSeq
+		isPresent := u.Parameters.State[contact].IsPresent
 
-		u.Parameters.State[contact] = newState
+		if isPresent {
+			newState = u.Parameters.State[contact]
+
+			u.Parameters.State[contact] = newState
+		} else {
+			newState.IsPresent = true
+			newState.IsRegistered = false
+			newState.Contact = contact
+			newState.AuthToken = ""
+			newState.TransportType = "UDP"
+			newState.CSeq = CSeq
+			u.Parameters.State[contact] = newState
+		}
+
+		fmt.Println(u.Parameters.State[contact])
 	}
 
 	return nil
