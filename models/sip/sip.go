@@ -10,14 +10,6 @@ import (
 	"github.com/ygzaydn/golang-sip/utils"
 )
 
-type SIPMessage struct {
-	Method     string
-	StatusCode int
-	Reason     string
-	Headers    map[string][]string
-	Body       string // Optional, I could use map[string][]string in case of SDP
-}
-
 func NewRequest(method string, headers map[string][]string, body string) *SIPMessage {
 	return &SIPMessage{
 		Method:  method,
@@ -140,7 +132,7 @@ func ISSIPMessage(message string) bool {
 	return false
 }
 
-func (s *SIPMessage) HandleRequest(channel chan *SIPMessage) {
+func (s *SIPMessage) ClientHandler(channel chan *SIPMessage) {
 	// Will work as SIP Parser
 	//output := make([]*SIPMessage, 0)
 	switch s.Method {
@@ -150,7 +142,6 @@ func (s *SIPMessage) HandleRequest(channel chan *SIPMessage) {
 		time.Sleep(2 * time.Second)
 		if len(s.Headers["Authorization"]) < 1 {
 			//output = append(output, s.generate401UnauthorizedMessage())
-			channel <- s.generate401UnauthorizedMessage()
 		} else {
 			//output = append(output, s.generateOKMessage())
 			channel <- s.generateOKMessage()
@@ -163,7 +154,31 @@ func (s *SIPMessage) HandleRequest(channel chan *SIPMessage) {
 	case 401:
 
 	}
-	//return output
+}
+
+func (s *SIPMessage) ServerHandler(channel chan *SIPMessage, info ServerParameters) {
+	// Will work as SIP Parser
+	//output := make([]*SIPMessage, 0)
+	switch s.Method {
+	case "REGISTER":
+		//output = append(output, s.generateTryingMessage())
+		channel <- s.generateTryingMessage()
+		time.Sleep(2 * time.Second)
+		if len(s.Headers["Authorization"]) < 1 {
+			//output = append(output, s.generate401UnauthorizedMessage())
+			channel <- s.generate401UnauthorizedMessage(info)
+		} else {
+			//output = append(output, s.generateOKMessage())
+			channel <- s.generateOKMessage()
+		}
+
+	}
+	switch s.StatusCode {
+	case 100:
+	case 200:
+	case 401:
+
+	}
 }
 
 func (s *SIPMessage) generateTryingMessage() *SIPMessage {
@@ -190,36 +205,29 @@ func (s *SIPMessage) generateOKMessage() *SIPMessage {
 	return NewResponse(200, "OK", responseHeaders, "")
 }
 
-func (s *SIPMessage) generate401UnauthorizedMessage() *SIPMessage {
-	responseHeaders := map[string][]string{
-		"Via":              s.Headers["Via"],
-		"From":             s.Headers["From"],
-		"To":               s.Headers["To"],
-		"Call-ID":          s.Headers["Call-ID"],
-		"CSeq":             s.Headers["CSeq"],
-		"WWW-Authenticate": {"Digest realm=\"example.com\", nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\", qop=\"auth\""},
+func (s *SIPMessage) generate401UnauthorizedMessage(info ServerParameters) *SIPMessage {
+	//var err error
+	responseHeaders := s.Headers
+	toTag := utils.CheckTag(responseHeaders["To"][0])
+
+	if toTag == "" {
+		responseHeaders["To"] = []string{responseHeaders["To"][0] + ";tag=" + utils.GenerateTag()}
 	}
+
+	fromTag := utils.CheckTag(responseHeaders["From"][0])
+	if fromTag == "" {
+		responseHeaders["From"] = []string{responseHeaders["From"][0] + ";tag=" + utils.GenerateTag()}
+	}
+
+	delete(responseHeaders, "Contact")
+	delete(responseHeaders, "Expires")
+	delete(responseHeaders, "Max-Forwards")
+	delete(responseHeaders, "User-Agent")
+
+	responseHeaders["WWW-Authenticate"] = []string{fmt.Sprintf("%s realm=\"%s\", nonce=\"%s\", opaque=\"%s\", algorithm=%s, qop=\"%s\"", info.Authentication.Schema, info.Realm, utils.GenerateNonce(), utils.GenerateOpaque(), info.Authentication.Algorithm, info.Authentication.Authentication)}
 
 	return NewResponse(401, "Unauthorized", responseHeaders, "")
 }
-
-// func (s *SIPMessage) handle401UnauthorizedMessage() *SIPMessage {
-// 	s.Headers["Authorization"] = []string{"Digest username=\"alice\", realm=\"example.com\", nonce=\"xyz\", uri=\"sip:example.com\", response=\"abc123\""}
-
-// 	parsedCSeq := strings.SplitN(s.Headers["CSeq"][0], " ", 2)
-
-// 	CSeqNum, err := strconv.Atoi(parsedCSeq[0])
-
-// 	if err != nil {
-// 		fmt.Println("Wrong CSeq value")
-// 	}
-
-// 	updatedCSeq := fmt.Sprintf("%d %s", CSeqNum+1, parsedCSeq[1])
-// 	s.Headers["CSeq"] = []string{updatedCSeq}
-
-// 	return NewRequest("REGISTER", s.Headers, s.Body)
-
-// }
 
 func (s *SIPMessage) ShouldCloseResponseChannel() bool {
 	if s.StatusCode == 200 {
@@ -237,4 +245,22 @@ func (s *SIPMessage) ShouldCloseRequestChannel() bool {
 		return true
 	}
 	return false
+}
+
+func GenerateInitialRegisterHeaders(port int, parameters ClientParameters) map[string][]string {
+	portString := fmt.Sprintf("%d", port)
+	return map[string][]string{
+		"Via": {
+			"SIP/2.0/UDP " + parameters.Realm + ":" + portString + ";branch=" + utils.GenerateBranch(),
+		},
+		"From":           {"<" + parameters.Uri + ">;tag=" + utils.GenerateTag()},
+		"To":             {"<" + parameters.Uri + ">"},
+		"Call-ID":        {utils.GenerateCallID() + "@" + parameters.Domain},
+		"CSeq":           {utils.GenerateCSeq() + " REGISTER"},
+		"Contact":        {parameters.Contact},
+		"Content-Length": {"0"}, // No body in this request
+		"Max-Forwards":   {"70"},
+		"User-Agent":     {parameters.UserAgent},
+		"Expires":        {"3600"},
+	}
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/ygzaydn/golang-sip/utils"
 )
 
-func Server(ip string, port int, bufferSize int, logger *logger.Logger, serverParameters ServerParameters) (*UDPServer, error) {
+func Server(ip string, port int, bufferSize int, logger *logger.Logger, serverParameters sip.ServerParameters) (*UDPServer, error) {
 	addr := net.UDPAddr{
 		Port: port,
 		IP:   net.ParseIP(ip),
@@ -84,7 +84,7 @@ func (u *UDPServer) udpListener(bufferSize int) {
 
 		messageChannel := make(chan *sip.SIPMessage, 50)
 		go func() {
-			message.HandleRequest(messageChannel)
+			message.ServerHandler(messageChannel, u.parameters)
 			close(messageChannel)
 		}()
 

@@ -11,12 +11,13 @@ import (
 func main() {
 	logger := logger.New(1)
 
-	authenticationParameters := udp.AuthenticationParameters{
+	authenticationParameters := sip.AuthenticationParameters{
 		Authentication: "auth",
-		Schema:         "digest",
+		Schema:         "Digest",
+		Algorithm:      "MD5",
 	}
 
-	serverParameters := udp.ServerParameters{
+	serverParameters := sip.ServerParameters{
 		Uri:            "sip:127.0.0.1",
 		Realm:          "127.0.0.1",
 		Domain:         "127.0.0.1",
@@ -29,12 +30,12 @@ func main() {
 		fmt.Println(err)
 	}
 
-	clientCredentials := udp.ClientCredentials{
+	clientCredentials := sip.ClientCredentials{
 		Username: "alice",
 		Password: "alice",
 	}
 
-	clientParameters := udp.ClientParameters{
+	clientParameters := sip.ClientParameters{
 		Uri:          "sip:alice@127.0.0.1",
 		Realm:        "127.0.0.1",
 		Domain:       "127.0.0.1",
@@ -50,7 +51,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	sipRequest := sip.NewRequest("REGISTER", clientA.GenerateInitialRegisterHeaders(), "")
+	sipRequest := sip.NewRequest("REGISTER", sip.GenerateInitialRegisterHeaders(clientA.Entity.Address.Port, clientA.Parameters), "")
 
 	err = clientA.SendMessage(server.Entity.Address, sipRequest)
 
