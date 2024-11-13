@@ -18,7 +18,7 @@ type UDPEntity struct {
 
 type UDPServer struct {
 	Entity     UDPEntity
-	parameters sip.ServerParameters
+	Parameters sip.ServerParameters
 }
 
 type UDPClient struct {

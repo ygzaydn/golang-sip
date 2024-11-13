@@ -33,7 +33,7 @@ func Server(ip string, port int, bufferSize int, logger *logger.Logger, serverPa
 			LastMessage:    nil,
 			MessageChannel: make(chan *sip.SIPMessage, 50),
 		},
-		parameters: serverParameters,
+		Parameters: serverParameters,
 	}
 
 	go server.udpListener(bufferSize)
@@ -83,8 +83,9 @@ func (u *UDPServer) udpListener(bufferSize int) {
 		//responses := message.HandleRequest()
 
 		messageChannel := make(chan *sip.SIPMessage, 50)
+
 		go func() {
-			message.ServerHandler(messageChannel, u.parameters)
+			message.ServerHandler(messageChannel, u.Parameters)
 			close(messageChannel)
 		}()
 
@@ -112,12 +113,21 @@ func (u *UDPServer) udpListener(bufferSize int) {
 		// }
 
 		for response := range messageChannel {
+			err = u.checkState(response)
+			if err != nil {
+				fmt.Println("Error on state:", err)
+				continue
+			}
+			err = u.updateState(response)
+			if err != nil {
+				fmt.Println("Error updating state:", err)
+				continue
+			}
 			err = u.SendMessage(clientAddr, response)
 			if err != nil {
 				fmt.Println("Error sending response:", err)
 				continue
 			}
-
 		}
 
 	}
@@ -150,4 +160,37 @@ func (u *UDPServer) ReadLastMessage() *sip.SIPMessage {
 
 	u.Entity.MessageChannel = make(chan *sip.SIPMessage, 50)
 	return u.Entity.LastMessage
+}
+
+func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
+	//TODO
+	switch parsedMessage.StatusCode {
+	case 401:
+
+		var newState sip.ClientInfo
+		contact, err := utils.ParseToHeader(parsedMessage.Headers["From"][0])
+		if err != nil {
+			return err
+		}
+
+		CSeq, err := utils.ParseCSeqHeader(parsedMessage.Headers["CSeq"][0])
+		if err != nil {
+			return err
+		}
+
+		newState.IsRegistered = false
+		newState.Contact = contact
+		newState.AuthToken = ""
+		newState.TransportType = "UDP"
+		newState.CSeq = CSeq
+
+		u.Parameters.State[contact] = newState
+	}
+
+	return nil
+}
+
+func (u *UDPServer) checkState(parsedMessage *sip.SIPMessage) error {
+	//TODO
+	return nil
 }

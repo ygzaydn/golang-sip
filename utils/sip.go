@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 
@@ -53,4 +55,21 @@ func CheckTag(field string) string {
 		return split[1]
 	}
 	return ""
+}
+
+func ParseCSeqHeader(header string) (int, error) {
+	return strconv.Atoi(strings.SplitN(header, " ", 2)[0])
+}
+
+func ParseToHeader(header string) (string, error) {
+	start := strings.Index(header, "<")
+	end := strings.Index(header, ">")
+
+	if start != -1 && end != -1 && start < end {
+		// Extract the substring between '<' and '>'
+		value := header[start+1 : end]
+		return value, nil
+	}
+	return "", errors.New("fail to parse header")
+
 }

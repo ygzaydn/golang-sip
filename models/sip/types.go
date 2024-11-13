@@ -1,5 +1,7 @@
 package sip
 
+import "time"
+
 type AuthenticationParameters struct {
 	Authentication string // auth or auth-int or none
 	Schema         string // Digest or Basic or None
@@ -12,6 +14,7 @@ type ServerParameters struct {
 	Domain         string
 	ServerType     string // server or proxy
 	Authentication AuthenticationParameters
+	State          map[string]ClientInfo
 }
 
 type ClientCredentials struct {
@@ -36,4 +39,13 @@ type SIPMessage struct {
 	Reason     string
 	Headers    map[string][]string
 	Body       string // Optional, I could use map[string][]string in case of SDP
+}
+
+type ClientInfo struct {
+	CSeq               int
+	IsRegistered       bool
+	Contact            string
+	AuthToken          string
+	TransportType      string    // e.g., "UDP", "TCP", "TLS"
+	RegistrationExpiry time.Time // When the registration expires
 }

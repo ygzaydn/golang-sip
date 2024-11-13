@@ -23,6 +23,7 @@ func main() {
 		Domain:         "127.0.0.1",
 		Authentication: authenticationParameters,
 		ServerType:     "server",
+		State:          make(map[string]sip.ClientInfo),
 	}
 
 	server, err := udp.Server("127.0.0.1", 5060, 1024, logger, serverParameters)
@@ -60,9 +61,9 @@ func main() {
 	}
 
 	clientMsg := clientA.ReadLastMessage()
-	serverMsg := server.ReadLastMessage()
+	_ = server.ReadLastMessage()
 
-	fmt.Println(clientMsg, serverMsg)
+	//fmt.Println(clientMsg, serverMsg)
 
 	if clientMsg.StatusCode == 401 {
 		requestHeaders := clientMsg.Headers
@@ -76,11 +77,13 @@ func main() {
 			fmt.Println("Error sending SIP Message")
 		}
 
-		clientMsg = clientA.ReadLastMessage()
-		serverMsg = server.ReadLastMessage()
+		_ = clientA.ReadLastMessage()
+		_ = server.ReadLastMessage()
 
-		fmt.Println(clientMsg, serverMsg)
+		// fmt.Println(clientMsg, serverMsg)
 	}
+
+	//fmt.Println(server.Parameters.State["sip:alice@127.0.0.1"].IsRegistered)
 
 	defer clientA.Entity.Connection.Close()
 	defer server.Entity.Connection.Close()
