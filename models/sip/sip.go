@@ -168,8 +168,13 @@ func (s *SIPMessage) ServerHandler(channel chan *SIPMessage, info ServerParamete
 			//output = append(output, s.generate401UnauthorizedMessage())
 			channel <- s.generate401UnauthorizedMessage(info)
 		} else {
+			msg, err := s.handle401RegisterMessage(info)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			channel <- msg
 			//output = append(output, s.generateOKMessage())
-			channel <- s.generateOKMessage()
 		}
 
 	}

@@ -49,6 +49,10 @@ func GenerateOpaque() string {
 	return nonce.String()[:12]
 }
 
+func GenerateAuthorizationHeader(schema, username, realm, nonce, uri, response, opaque, qop, cnonce, nonce_count, algorithm string) string {
+	return fmt.Sprintf("%s username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"sip:%s\", response=\"%s\", opaque=\"%s\", qop=\"%s\", cnonce=\"%s\", nc=%s, algorithm=%s", schema, username, realm, nonce, uri, response, opaque, qop, cnonce, nonce_count, algorithm)
+}
+
 func CheckTag(field string) string {
 	split := strings.SplitN(field, ">;tag=", 2)
 	if len(split) > 1 {
@@ -76,7 +80,7 @@ func ParseCSeqHeader(header string) (map[string]any, error) {
 	return output, nil
 }
 
-func ParseWWWAuthenticateHeader(header string) (map[string]any, error) {
+func ParseWWWAuthenticateandAuthorizationHeader(header string) (map[string]any, error) {
 	output := make(map[string]any)
 	parsedHeader := strings.SplitAfterN(header, " ", 2)
 

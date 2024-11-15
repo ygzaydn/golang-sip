@@ -179,6 +179,11 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 			return err
 		}
 
+		authenticate, err := utils.ParseWWWAuthenticateandAuthorizationHeader(parsedMessage.Headers["WWW-Authenticate"][0])
+		if err != nil {
+			return err
+		}
+
 		isPresent := u.Parameters.State[contact["User"].(string)].IsPresent
 
 		if isPresent {
@@ -191,6 +196,8 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 			newState.AuthToken = ""
 			newState.TransportType = "UDP"
 			newState.CSeq = CSeq["CSeq"].(int)
+			newState.Nonce = authenticate["Nonce"].(string)
+			newState.Opaque = authenticate["Opaque"].(string)
 			u.Parameters.State[contact["User"].(string)] = newState
 		}
 

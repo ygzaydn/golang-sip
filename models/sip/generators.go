@@ -55,6 +55,49 @@ func (s *SIPMessage) generate401UnauthorizedMessage(info ServerParameters) *SIPM
 	return NewResponse(401, "Unauthorized", responseHeaders, "")
 }
 
+func (s *SIPMessage) handle401RegisterMessage(info ServerParameters) (*SIPMessage, error) {
+	//var err error
+	requestHeaders := s.Headers
+	var err error = nil
+	if requestHeaders["Authorization"] == nil {
+		return nil, errors.New("authorization header must be present")
+	}
+
+	authorizationHeader, err := utils.ParseWWWAuthenticateandAuthorizationHeader(requestHeaders["Authorization"][0])
+
+	if err != nil {
+		return nil, err
+	}
+
+	fromHeader, err := utils.ParseFromandToHeader(requestHeaders["From"][0])
+
+	if err != nil {
+		return nil, err
+	}
+
+	HA1 := utils.GenerateHA1(fromHeader["User"].(string), authorizationHeader["Realm"].(string), fromHeader["User"].(string))
+
+	HA2 := utils.GenerateHA2("REGISTER", fromHeader["Host"].(string))
+
+	userState := info.State[fromHeader["User"].(string)]
+
+	response := utils.GenerateResponse(HA1, userState.Nonce, authorizationHeader["Nc"].(string), userState.Opaque, authorizationHeader["Qop"].(string), HA2)
+
+	cSeqHeader, err := utils.ParseCSeqHeader(requestHeaders["CSeq"][0])
+
+	if err != nil {
+		return nil, err
+	}
+
+	if response == authorizationHeader["Response"].(string) {
+		newCSeq := cSeqHeader["CSeq"].(int) + 1
+		requestHeaders["CSeq"] = []string{fmt.Sprintf("%d %s", newCSeq, cSeqHeader["Method"])}
+		return NewResponse(200, "OK", requestHeaders, ""), nil
+	}
+
+	return s.generate401UnauthorizedMessage(info), err
+}
+
 func (s *SIPMessage) GenerateRegisterAfter401() (*SIPMessage, error) {
 	requestHeaders := s.Headers
 	var err error = nil
@@ -62,7 +105,7 @@ func (s *SIPMessage) GenerateRegisterAfter401() (*SIPMessage, error) {
 		return nil, errors.New("www-authenticate header must be present")
 	}
 
-	parsedWWWHeader, err := utils.ParseWWWAuthenticateHeader(requestHeaders["WWW-Authenticate"][0])
+	parsedWWWHeader, err := utils.ParseWWWAuthenticateandAuthorizationHeader(requestHeaders["WWW-Authenticate"][0])
 	if err != nil {
 		return nil, err
 	}
@@ -72,26 +115,20 @@ func (s *SIPMessage) GenerateRegisterAfter401() (*SIPMessage, error) {
 		return nil, err
 	}
 
-	fmt.Println(parsedWWWHeader)
-	fmt.Println(parsedFromHeader)
+	HA1 := utils.GenerateHA1(parsedFromHeader["User"].(string), parsedWWWHeader["Realm"].(string), parsedFromHeader["User"].(string))
 
-	HA1 := utils.MD5Hasher(fmt.Sprintf("%s:%s:%s", parsedFromHeader["User"], parsedWWWHeader["Realm"], parsedFromHeader["User"]))
-
-	HA2 := utils.MD5Hasher(fmt.Sprintf("REGISTER:sip:%s", parsedFromHeader["Host"]))
+	HA2 := utils.GenerateHA2("REGISTER", parsedFromHeader["Host"].(string))
 
 	nonce_count := "00000001"
 
-	response := utils.MD5Hasher(fmt.Sprintf("%s:%s:%s:%s:%s:%s", HA1, parsedWWWHeader["Nonce"], nonce_count, parsedWWWHeader["Opaque"], parsedWWWHeader["Qop"], HA2))
+	response := utils.GenerateResponse(HA1, parsedWWWHeader["Nonce"].(string), nonce_count, parsedWWWHeader["Opaque"].(string), parsedWWWHeader["Qop"].(string), HA2)
 
-	authorizationHeader := fmt.Sprintf("%s username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"sip:%s\", response=\"%s\", opaque=\"%s\", qop=\"%s\", cnonce=\"%s\", nc=%s, algorithm=%s", parsedWWWHeader["Schema"], parsedFromHeader["User"], parsedWWWHeader["Realm"], parsedWWWHeader["Nonce"], parsedFromHeader["Host"], response, parsedWWWHeader["Opaque"], parsedWWWHeader["Qop"], parsedWWWHeader["Nonce"], nonce_count, parsedWWWHeader["Algorithm"])
+	authorizationHeader := utils.GenerateAuthorizationHeader(parsedWWWHeader["Schema"].(string), parsedFromHeader["User"].(string), parsedWWWHeader["Realm"].(string), parsedWWWHeader["Nonce"].(string), parsedFromHeader["Host"].(string), response, parsedWWWHeader["Opaque"].(string), parsedWWWHeader["Qop"].(string), parsedWWWHeader["Nonce"].(string), nonce_count, parsedWWWHeader["Algorithm"].(string))
 
 	delete(requestHeaders, "WWW-Authenticate")
 	requestHeaders["Authorization"] = []string{authorizationHeader}
 
-	fmt.Println(authorizationHeader)
-
 	return NewRequest("REGISTER", requestHeaders, ""), err
-
 }
 
 func GenerateInitialRegisterHeaders(port int, parameters ClientParameters) map[string][]string {

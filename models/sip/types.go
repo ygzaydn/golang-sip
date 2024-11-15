@@ -49,4 +49,7 @@ type ClientInfo struct {
 	AuthToken          string
 	TransportType      string    // e.g., "UDP", "TCP", "TLS"
 	RegistrationExpiry time.Time // When the registration expires
+	Nonce              string
+	Opaque             string
+	Response           string
 }
