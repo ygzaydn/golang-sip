@@ -66,11 +66,13 @@ func main() {
 	//fmt.Println(clientMsg, serverMsg)
 
 	if clientMsg.StatusCode == 401 {
-		requestHeaders := clientMsg.Headers
-		requestHeaders["Authorization"] = []string{"Digest username=\"alice\", realm=\"127.0.0.1\", nonce=\"xyz\", uri=\"sip:127.0.0.1\", response=\"abc123\""}
-		delete(requestHeaders, "WWW-Authenticate")
 
-		sipRequest = sip.NewRequest("REGISTER", requestHeaders, "")
+		sipRequest, err = clientMsg.GenerateRegisterAfter401()
+
+		if err != nil {
+			fmt.Println("Error generating SIP Message")
+		}
+
 		err = clientA.SendMessage(server.Entity.Address, sipRequest)
 
 		if err != nil {
