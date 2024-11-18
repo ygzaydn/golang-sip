@@ -79,7 +79,8 @@ func (s *SIPMessage) handle401RegisterMessage(info ServerParameters) (*SIPMessag
 
 	HA2 := utils.GenerateHA2("REGISTER", fromHeader["Host"].(string))
 
-	userState := info.State[fromHeader["User"].(string)]
+	username := fmt.Sprintf("sip:%s@%s", fromHeader["User"].(string), fromHeader["Host"].(string))
+	userState := info.State[username]
 
 	response := utils.GenerateResponse(HA1, userState.Nonce, authorizationHeader["Nc"].(string), userState.Opaque, authorizationHeader["Qop"].(string), HA2)
 

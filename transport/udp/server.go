@@ -164,11 +164,10 @@ func (u *UDPServer) ReadLastMessage() *sip.SIPMessage {
 
 func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 	//TODO
+
 	switch parsedMessage.StatusCode {
+
 	case 401:
-
-		var newState sip.ClientInfo
-
 		contact, err := utils.ParseFromandToHeader(parsedMessage.Headers["From"][0])
 		if err != nil {
 			return err
@@ -178,17 +177,19 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 		if err != nil {
 			return err
 		}
+		var newState sip.ClientInfo
+		username := fmt.Sprintf("sip:%s@%s", contact["User"].(string), contact["Host"].(string))
 
 		authenticate, err := utils.ParseWWWAuthenticateandAuthorizationHeader(parsedMessage.Headers["WWW-Authenticate"][0])
 		if err != nil {
 			return err
 		}
 
-		isPresent := u.Parameters.State[contact["User"].(string)].IsPresent
+		isPresent := u.Parameters.State[username].IsPresent
 
 		if isPresent {
-			newState = u.Parameters.State[contact["User"].(string)]
-			u.Parameters.State[contact["User"].(string)] = newState
+			newState = u.Parameters.State[username]
+			u.Parameters.State[username] = newState
 		} else {
 			newState.IsPresent = true
 			newState.IsRegistered = false
@@ -198,7 +199,42 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 			newState.CSeq = CSeq["CSeq"].(int)
 			newState.Nonce = authenticate["Nonce"].(string)
 			newState.Opaque = authenticate["Opaque"].(string)
-			u.Parameters.State[contact["User"].(string)] = newState
+			u.Parameters.State[username] = newState
+		}
+	case 200:
+		CSeq, err := utils.ParseCSeqHeader(parsedMessage.Headers["CSeq"][0])
+		if err != nil {
+			return err
+		}
+
+		if CSeq["Method"] == "REGISTER" {
+
+			var newState sip.ClientInfo
+			contact, err := utils.ParseFromandToHeader(parsedMessage.Headers["From"][0])
+			if err != nil {
+				return err
+			}
+
+			username := fmt.Sprintf("sip:%s@%s", contact["User"].(string), contact["Host"].(string))
+
+			fmt.Println(username)
+			isPresent := u.Parameters.State[username].IsPresent
+
+			if isPresent {
+
+				newState = u.Parameters.State[username]
+				newState.IsRegistered = true
+				u.Parameters.State[username] = newState
+
+			} else {
+				newState.IsPresent = true
+				newState.IsRegistered = true
+				newState.Contact = contact["User"].(string)
+				newState.AuthToken = ""
+				newState.TransportType = "UDP"
+				newState.CSeq = CSeq["CSeq"].(int)
+				u.Parameters.State[username] = newState
+			}
 		}
 
 	}

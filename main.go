@@ -85,7 +85,7 @@ func main() {
 		// fmt.Println(clientMsg, serverMsg)
 	}
 
-	//fmt.Println(server.Parameters.State["sip:alice@127.0.0.1"].IsRegistered)
+	fmt.Println(server.Parameters.State["sip:alice@127.0.0.1"].IsRegistered)
 
 	defer clientA.Entity.Connection.Close()
 	defer server.Entity.Connection.Close()

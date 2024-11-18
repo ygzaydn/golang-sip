@@ -682,3 +682,279 @@
 2024-11-15 11:53:59.4050798 +0000 UTC	- client received 	- 100 Trying
 2024-11-15 11:54:01.4035726 +0000 UTC	- server sent 	- 401 Unauthorized
 2024-11-15 11:54:01.4040867 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:33:24.3610951 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:33:24.3719485 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:33:24.3719485 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:33:24.3730657 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:33:26.3727572 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:33:26.3745343 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:33:26.3761557 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:33:26.3773499 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:33:26.3778569 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:33:26.3779308 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:33:28.3786349 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:33:28.3810889 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:33:51.941214 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:33:51.9417722 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:33:51.9423192 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:33:51.9423192 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:33:51.9423192 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:33:51.9428781 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:33:51.9434889 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:33:51.9434889 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:33:51.9440033 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:33:51.9440033 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:33:51.9440033 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:33:51.9445216 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:34:11.1399268 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:34:11.1410364 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:34:11.1416709 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:34:11.1422212 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:34:11.1422212 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:34:11.143427 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:34:11.143427 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:34:11.1439338 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:34:11.1439338 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:34:11.1444744 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:34:11.1444744 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:34:11.1450967 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:35:46.5353696 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:35:46.5358881 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:35:46.5358881 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:35:46.5364163 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:35:46.5364163 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:35:46.5369392 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:35:46.5374526 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:35:46.5374526 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:35:46.5374526 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:35:46.537981 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:35:46.537981 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:35:46.5385083 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:37:49.8652489 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:37:49.8657816 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:37:49.8663104 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:37:49.8663104 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:37:49.8663104 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:37:49.8669381 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:37:49.867443 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:37:49.8680206 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:37:49.8680206 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:37:49.8685246 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:37:49.8685246 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:37:49.8690365 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:38:11.9374472 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:11.9379644 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:11.9379644 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:11.9391379 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:38:11.9391379 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:11.9396723 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:38:11.9396723 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:11.940227 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:11.9407558 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:11.9412774 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:38:11.9412774 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:11.9421452 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:38:30.0839568 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:30.0844734 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:30.084991 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:30.0855187 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:30.0855187 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:38:30.08604 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:38:30.08604 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:30.0865757 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:30.0865757 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:30.0870912 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:38:30.0870912 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:30.0876299 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:38:41.5663036 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:41.5668258 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:41.5668258 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:41.5673547 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:41.5673547 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:38:41.5679017 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:38:41.5679017 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:41.5684375 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:41.5684375 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:41.5689666 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:38:41.5689666 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:41.5694941 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:38:48.3233277 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:48.3238451 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:48.3238451 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:48.3243662 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:48.3243662 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:38:48.3249581 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:38:48.3249581 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:38:48.3254781 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:38:48.3254781 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:38:48.3260207 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:38:48.3260207 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:38:48.3265546 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:39:03.5802282 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:39:03.5809028 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:39:03.5809028 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:39:03.5814261 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:39:03.5814261 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:39:03.5819486 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:39:03.5819486 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:39:03.5824759 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:39:03.5824759 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:39:03.5830028 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:39:03.5835434 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:39:03.5835434 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:39:41.8616645 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:39:41.8621956 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:39:41.8621956 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:39:41.8627315 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:39:41.8627315 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:39:41.8632622 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:39:41.8632622 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:39:41.8637938 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:39:41.8637938 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:39:41.8643401 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:39:41.8643401 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:39:41.8648874 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:40:06.2999873 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:40:06.3005018 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:40:06.3010367 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:40:06.3010367 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:40:06.3010367 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:40:06.3016669 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:40:06.3021872 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:40:06.3027068 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:40:06.3027068 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:40:06.3032996 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:40:06.3038046 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:40:06.3042107 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:40:32.5255478 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:40:32.5261011 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:40:32.5261011 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:40:32.5266335 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:40:32.5266335 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:40:32.5271753 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:40:32.5271753 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:40:32.5277359 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:40:32.5277359 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:40:32.5283726 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:40:32.5288987 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:40:32.5288987 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:44:16.2263422 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:44:16.2269465 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:44:16.2274686 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:44:16.2280199 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:44:16.2280199 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:44:16.2285399 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:44:16.2290585 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:44:16.2290585 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:44:16.2295778 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:44:16.2295778 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:44:16.2295778 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:44:16.2301213 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:44:29.5962421 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:44:29.5967461 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:44:29.5972955 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:44:29.5978241 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:44:29.5978241 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:44:29.5983435 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:44:29.5989915 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:44:29.599496 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:44:29.6000113 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:44:29.6001192 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:44:29.6001192 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:44:29.6006223 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:44:37.9485772 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:44:37.949121 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:44:37.9496868 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:44:37.9502396 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:44:37.9502396 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:44:37.9507895 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:44:37.9507895 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:44:37.9513086 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:44:37.9513086 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:44:37.9518288 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:44:37.9518288 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:44:37.9523499 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:45:46.9194934 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:45:46.9200139 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:45:46.9200139 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:45:46.9205301 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:45:46.9205301 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:45:46.9210777 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:45:46.9216845 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:45:46.9216845 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:45:46.9222096 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:45:46.9227478 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:45:46.9227478 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:45:46.9232867 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:46:22.0256229 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:22.0261456 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:22.0266856 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:22.0272323 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:22.0272323 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:46:22.0277682 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:46:22.0277682 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:22.0282973 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:22.0282973 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:22.0288181 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:46:22.0288181 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:22.0293711 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:46:26.1645613 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:26.1650648 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:26.1656503 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:26.1661557 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:26.1661557 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:46:26.1667588 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:46:26.1667588 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:26.1672669 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:26.1678178 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:26.1678178 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:46:26.1678178 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:26.1683489 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:46:28.061045 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:28.0615764 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:28.0621245 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:28.0626691 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:28.0626691 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:46:28.0632995 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:46:28.063804 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:28.0643877 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:28.0643877 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:28.0649275 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:46:28.0649275 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:28.0654586 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:46:29.8296649 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:29.8301998 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:29.8301998 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:29.8307232 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:29.8307232 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:46:29.8312639 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:46:29.8312639 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:29.8317862 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:29.8317862 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:29.8323149 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:29.8323149 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:46:29.832837 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:46:37.7252116 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:37.7257314 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:37.7262957 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:37.7268191 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:37.7268191 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:46:37.7272892 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:46:37.7278119 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:46:37.7279128 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:46:37.7283282 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:46:37.728855 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:46:37.7283282 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:46:37.728855 +0000 UTC	- client received 	- 200 OK
+2024-11-18 05:47:00.3815118 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:47:00.3820318 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:47:00.3825544 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:47:00.383075 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:47:00.383075 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-11-18 05:47:00.383075 +0000 UTC	- client received 	- 401 Unauthorized
+2024-11-18 05:47:00.3835952 +0000 UTC	- client sent	- REGISTER
+2024-11-18 05:47:00.3835952 +0000 UTC	- server received 	- REGISTER
+2024-11-18 05:47:00.3841172 +0000 UTC	- server sent 	- 100 Trying
+2024-11-18 05:47:00.3841172 +0000 UTC	- server sent 	- 200 OK
+2024-11-18 05:47:00.3841172 +0000 UTC	- client received 	- 100 Trying
+2024-11-18 05:47:00.3846424 +0000 UTC	- client received 	- 200 OK

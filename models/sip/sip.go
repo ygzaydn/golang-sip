@@ -163,7 +163,7 @@ func (s *SIPMessage) ServerHandler(channel chan *SIPMessage, info ServerParamete
 	case "REGISTER":
 		//output = append(output, s.generateTryingMessage())
 		channel <- s.generateTryingMessage()
-		time.Sleep(2 * time.Second)
+		//time.Sleep(2 * time.Second)
 		if len(s.Headers["Authorization"]) < 1 {
 			//output = append(output, s.generate401UnauthorizedMessage())
 			channel <- s.generate401UnauthorizedMessage(info)
