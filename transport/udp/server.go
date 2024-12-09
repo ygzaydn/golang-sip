@@ -217,7 +217,6 @@ func (u *UDPServer) updateState(parsedMessage *sip.SIPMessage) error {
 
 			username := fmt.Sprintf("sip:%s@%s", contact["User"].(string), contact["Host"].(string))
 
-			fmt.Println(username)
 			isPresent := u.Parameters.State[username].IsPresent
 
 			if isPresent {

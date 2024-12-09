@@ -958,3 +958,15 @@
 2024-11-18 05:47:00.3841172 +0000 UTC	- server sent 	- 200 OK
 2024-11-18 05:47:00.3841172 +0000 UTC	- client received 	- 100 Trying
 2024-11-18 05:47:00.3846424 +0000 UTC	- client received 	- 200 OK
+2024-12-09 05:33:04.5886909 +0000 UTC	- client sent	- REGISTER
+2024-12-09 05:33:04.5898203 +0000 UTC	- server received 	- REGISTER
+2024-12-09 05:33:04.5898203 +0000 UTC	- server sent 	- 100 Trying
+2024-12-09 05:33:04.5904023 +0000 UTC	- client received 	- 100 Trying
+2024-12-09 05:33:04.5904023 +0000 UTC	- server sent 	- 401 Unauthorized
+2024-12-09 05:33:04.5914734 +0000 UTC	- client received 	- 401 Unauthorized
+2024-12-09 05:33:04.5914734 +0000 UTC	- client sent	- REGISTER
+2024-12-09 05:33:04.5920998 +0000 UTC	- server received 	- REGISTER
+2024-12-09 05:33:04.5926942 +0000 UTC	- server sent 	- 100 Trying
+2024-12-09 05:33:04.5932 +0000 UTC	- server sent 	- 200 OK
+2024-12-09 05:33:04.5932 +0000 UTC	- client received 	- 100 Trying
+2024-12-09 05:33:04.5938179 +0000 UTC	- client received 	- 200 OK
